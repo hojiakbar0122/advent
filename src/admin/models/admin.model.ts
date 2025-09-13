@@ -1,17 +1,7 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
 
-interface IAdminCreationAttr {
-  first_name: string;
-  last_name: string;
-  phone: string;
-  email: string;
-  hashed_password: string;
-  is_creator: boolean;
-  is_active: boolean;
-}
-
 @Table({ tableName: "admins" })
-export class Admin extends Model<Admin, IAdminCreationAttr> {
+export class Admin extends Model<Admin> {
   @Column({
     type: DataType.INTEGER,
     autoIncrement: true,

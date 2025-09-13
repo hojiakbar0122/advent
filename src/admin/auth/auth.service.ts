@@ -42,18 +42,7 @@ export class AuthService {
     };
   }
 
-  async signUp(createAdminDto: CreateAdminDto) {
-    const doctor = await this.adminsService.findByEmail(createAdminDto.email);
-    if (doctor) {
-      throw new ConflictException({
-        message: "Bunday Emailli Admin mavjud",
-      });
-    }
-    const newAdmin = await this.adminsService.create(createAdminDto);
-    return { message: "Admin qo'shildi", adminId: newAdmin.id };
-  }
-
-  async signIn(signInDto: SignInDto, res: Response) {
+  async login(signInDto: SignInDto, res: Response) {
     const admin = await this.adminsService.findByEmail(signInDto.email);
     if (!admin) {
       throw new BadRequestException({ message: "Email yoki Password Notgiri" });
@@ -77,7 +66,7 @@ export class AuthService {
     return { message: "Tizimga hush kelibsiz", accessToken };
   }
 
-  async signOut(refreshToken: string, res: Response) {
+  async logout(refreshToken: string, res: Response) {
     const adminData = await this.jwtService.verify(refreshToken, {
       secret: process.env.REFRESH_TOKEN_KEY,
     });

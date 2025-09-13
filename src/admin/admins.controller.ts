@@ -17,9 +17,10 @@ import { AdminLevel } from "../common/decorators/admin-level.decorator";
 import { JwtSelfGuard } from "../common/guards/jwt-self.guard";
 import { JwtAuthGuard } from "../common/guards/jwt-auth.guard";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { ResetPasswordDto } from "./dto/reset-password.dto";
 
-@ApiTags("admins") // Swagger group nomi
-@Controller("admins")
+@ApiTags("admin") // Swagger group nomi
+@Controller("admin")
 export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}
 
@@ -31,8 +32,8 @@ export class AdminsController {
     return this.adminsService.create(createAdminDto);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @AdminLevel("super")
+  @UseGuards(JwtAuthGuard)
+  // @AdminLevel("super")
   @ApiBearerAuth()
   @Get()
   @ApiOperation({ summary: "Barcha adminlarni olish (faqat SuperAdmin)" })
@@ -41,7 +42,7 @@ export class AdminsController {
     return this.adminsService.findAll();
   }
 
-  @UseGuards(JwtSelfGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Get(":id")
   @ApiOperation({ summary: "ID bo‘yicha bitta adminni olish" })
@@ -51,7 +52,7 @@ export class AdminsController {
     return this.adminsService.findOne(+id);
   }
 
-  @UseGuards(JwtSelfGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Patch(":id")
   @ApiOperation({ summary: "Admin ma’lumotlarini yangilash" })
@@ -60,7 +61,7 @@ export class AdminsController {
     return this.adminsService.update(+id, updateAdminDto);
   }
 
-  @UseGuards(JwtSelfGuard, JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @ApiBearerAuth()
   @Delete(":id")
   @ApiOperation({ summary: "Adminni o‘chirish" })
@@ -69,14 +70,21 @@ export class AdminsController {
     return this.adminsService.remove(+id);
   }
 
-  @Get("activate/:link")
-  @ApiOperation({ summary: "Email orqali adminni aktivlashtirish" })
-  @ApiResponse({ status: 200, description: "Admin muvaffaqiyatli aktivlashtirildi" })
-  @ApiResponse({ status: 400, description: "Activation link noto‘g‘ri yoki aktiv bo‘lgan" })
-  async activateAdmin(@Param("link") link: string) {
-    if (!link) {
-      throw new BadRequestException("Activation link not found");
-    }
-    return this.adminsService.activateAdmin(link);
+
+  @UseGuards(JwtAuthGuard)
+  @Post('reset-password')
+  resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    return this.adminsService.resetPassword(resetPasswordDto);
   }
+
+  // @Get("activate/:link")
+  // @ApiOperation({ summary: "Email orqali adminni aktivlashtirish" })
+  // @ApiResponse({ status: 200, description: "Admin muvaffaqiyatli aktivlashtirildi" })
+  // @ApiResponse({ status: 400, description: "Activation link noto‘g‘ri yoki aktiv bo‘lgan" })
+  // async activateAdmin(@Param("link") link: string) {
+  //   if (!link) {
+  //     throw new BadRequestException("Activation link not found");
+  //   }
+  //   return this.adminsService.activateAdmin(link);
+  // }
 }

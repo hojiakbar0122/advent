@@ -23,11 +23,11 @@ export class AdminAuthController {
   @ApiOperation({ summary: "Admin login qilish" })
   @ApiResponse({ status: 200, description: "Admin muvaffaqiyatli login qildi" })
   @ApiResponse({ status: 401, description: "Login yoki parol noto‘g‘ri" })
-  async signIn(
+  async login(
     @Body() signInDto: SignInDto,
     @Res({ passthrough: true }) res: Response
   ) {
-    return this.authService.signIn(signInDto, res);
+    return this.authService.login(signInDto, res);
   }
 
   // ========== LOGOUT ==========
@@ -36,11 +36,11 @@ export class AdminAuthController {
   @ApiOperation({ summary: "Admin logout qilish" })
   @ApiResponse({ status: 200, description: "Admin muvaffaqiyatli chiqdi" })
   @ApiResponse({ status: 401, description: "Token noto‘g‘ri yoki topilmadi" })
-  signOut(
+  logout(
     @CookieGetter("refresh_token") refreshToken: string,
     @Res({ passthrough: true }) res: Response
   ) {
-    return this.authService.signOut(refreshToken, res);
+    return this.authService.logout(refreshToken, res);
   }
 
   // ========== REFRESH TOKEN ==========
