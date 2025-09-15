@@ -17,8 +17,7 @@ async function start() {
     const allowedOrigins = [
       "http://localhost:8000",
       "http://localhost:3000",
-      "https://east-way.uz",
-      "https://api.east-way.uz",
+      "https://eastway-api.mern.uz",
       "https://east-way.vercel.app",
     ];
 
