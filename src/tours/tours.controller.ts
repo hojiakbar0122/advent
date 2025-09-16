@@ -5,7 +5,7 @@ import {
 import { ToursService } from './tours.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
 import { Tour } from './models/tour.model';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
@@ -15,7 +15,8 @@ export class ToursController {
   constructor(private readonly toursService: ToursService) {}
 
   // Tour yaratish (asosiy + child-lar bilan)
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'Create a new tour (with child data)' })
   @ApiResponse({ status: 201, description: 'Tour successfully created', type: Tour })
@@ -44,6 +45,7 @@ export class ToursController {
 
   // Tour yangilash
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Put(':id')
   @ApiOperation({ summary: 'Update a tour by ID (with child data)' })
   @ApiParam({ name: 'id', type: Number, description: 'Tour ID' })
@@ -55,6 +57,7 @@ export class ToursController {
 
   // Tour o‘chirish
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a tour by ID (cascade delete child data)' })
   @ApiParam({ name: 'id', type: Number, description: 'Tour ID' })

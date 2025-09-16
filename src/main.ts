@@ -14,10 +14,12 @@ async function start() {
     app.useGlobalPipes(new ValidationPipe());
     app.setGlobalPrefix("api");
 
-    const allowedOrigins = [
+
+     const allowedOrigins = [
       "http://localhost:8000",
       "http://localhost:3000",
       "https://eastway-api.mern.uz",
+      "http://eastway-api.mern.uz",
       "https://east-way.vercel.app",
     ];
 
@@ -31,7 +33,7 @@ async function start() {
       },
       methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
       credentials: true,
-    });
+      });
 
     const config = new DocumentBuilder()
       .setTitle("East-Way project")

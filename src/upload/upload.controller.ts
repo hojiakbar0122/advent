@@ -7,6 +7,7 @@ import {
   Param,
   NotFoundException,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -19,14 +20,18 @@ import {
   ApiResponse,
   ApiTags,
   ApiParam,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { UploadResponseDto } from './dto/upload-response.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('Upload')
 @Controller('upload')
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'Rasm yuklash' })
   @ApiConsumes('multipart/form-data')
@@ -73,6 +78,8 @@ export class UploadController {
   }
 
   // 🗑 DELETE
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiOperation({ summary: 'Rasmni o‘chirish (DB + Fayl tizimidan)' })
   @ApiParam({ name: 'id', example: 1 })

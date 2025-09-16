@@ -1,16 +1,20 @@
 import { 
-  Controller, Get, Post, Body, Patch, Param, Delete 
+  Controller, Get, Post, Body, Patch, Param, Delete, 
+  UseGuards
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
 @ApiTags('Categories') // Swaggerda bo‘lim nomi chiqadi
 @Controller('category')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'Yangi category yaratish' })
   @ApiResponse({ status: 201, description: 'Category muvaffaqiyatli yaratildi' })
@@ -34,6 +38,8 @@ export class CategoryController {
     return this.categoryService.findOne(+id);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   @ApiOperation({ summary: 'Categoryni yangilash' })
   @ApiResponse({ status: 200, description: 'Category muvaffaqiyatli yangilandi' })
@@ -42,6 +48,8 @@ export class CategoryController {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiOperation({ summary: 'Categoryni o‘chirish' })
   @ApiResponse({ status: 200, description: 'Category muvaffaqiyatli o‘chirildi' })

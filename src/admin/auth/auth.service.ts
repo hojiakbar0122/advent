@@ -47,9 +47,9 @@ export class AuthService {
     if (!admin) {
       throw new BadRequestException({ message: "Email yoki Password Notgiri" });
     }
-    if (!admin.is_active) {
-      throw new BadRequestException({ message: "Avval Emailni Tasdiqlang" });
-    }
+    // if (!admin.is_active) {
+    //   throw new BadRequestException({ message: "Avval Emailni Tasdiqlang" });
+    // }
     const isValidPassword = await bcrypt.compare(
       signInDto.password,
       admin.hashed_password

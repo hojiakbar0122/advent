@@ -76,15 +76,4 @@ export class AdminsController {
   resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
     return this.adminsService.resetPassword(resetPasswordDto);
   }
-
-  // @Get("activate/:link")
-  // @ApiOperation({ summary: "Email orqali adminni aktivlashtirish" })
-  // @ApiResponse({ status: 200, description: "Admin muvaffaqiyatli aktivlashtirildi" })
-  // @ApiResponse({ status: 400, description: "Activation link noto‘g‘ri yoki aktiv bo‘lgan" })
-  // async activateAdmin(@Param("link") link: string) {
-  //   if (!link) {
-  //     throw new BadRequestException("Activation link not found");
-  //   }
-  //   return this.adminsService.activateAdmin(link);
-  // }
 }
