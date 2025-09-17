@@ -1,11 +1,12 @@
 import {
   Controller, Get, Post, Body, Patch, Param, Delete,
-  Put, UseGuards
+  Put, UseGuards,
+  Query
 } from '@nestjs/common';
 import { ToursService } from './tours.service';
 import { CreateTourDto } from './dto/create-tour.dto';
 import { UpdateTourDto } from './dto/update-tour.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Tour } from './models/tour.model';
 import { JwtAuthGuard } from 'src/common/guards/jwt-auth.guard';
 
@@ -27,10 +28,17 @@ export class ToursController {
 
   // Barcha tourlarni olish
   @Get()
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1, description: 'Page number (default: 1)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 10, description: 'Items per page (default: 10)' })
+  @ApiQuery({ name: 'categoryId', required: false, type: Number, example: 3, description: 'Filter by category ID' })
   @ApiOperation({ summary: 'Get all tours (with relations)' })
   @ApiResponse({ status: 200, description: 'List of tours', type: [Tour] })
-  findAll() {
-    return this.toursService.findAll();
+  findAll(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+    @Query('categoryId') categoryId?: number,
+  ) {
+    return this.toursService.findAll(Number(page), Number(limit), categoryId ? Number(categoryId) : undefined);
   }
 
   // Bitta tourni olish

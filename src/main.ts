@@ -8,7 +8,7 @@ import { join } from "path";
 
 async function start() {
   try {
-    const PORT = process.env.PORT || 3001;
+    const PORT = process.env.PORT || 3002;
     const app = await NestFactory.create<NestExpressApplication>(AppModule);
     app.use(cookieParser());
     app.useGlobalPipes(new ValidationPipe());
@@ -16,6 +16,7 @@ async function start() {
 
 
      const allowedOrigins = [
+      "http://localhost:5173",
       "http://localhost:8000",
       "http://localhost:3000",
       "https://eastway-api.mern.uz",

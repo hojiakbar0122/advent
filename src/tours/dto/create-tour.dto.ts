@@ -73,8 +73,8 @@ export class TourDateDto {
   toDate: string;
 
   @ApiProperty({ example: 'avaible', enum: ['solduot', 'avaible', 'ongoing', 'finished'] })
-  @IsEnum(['solduot', 'avaible', 'ongoing', 'finished'])
-  status: 'solduot' | 'avaible' | 'ongoing' | 'finished';
+  @IsEnum(['solduot', 'available', 'ongoing', 'finished'])
+  status: 'solduot' | 'available' | 'ongoing' | 'finished';
 
   @ApiProperty({ example: 1390 })
   @IsNumber()

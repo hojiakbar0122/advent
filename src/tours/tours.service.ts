@@ -16,8 +16,28 @@ export class ToursService {
     return tour;
   }
 
-  async findAll(): Promise<Tour[]> {
-    return this.tourModel.findAll();
+   async findAll(page = 1, limit = 10, categoryId?: number) {
+    const offset = (page - 1) * limit;
+
+    const where: any = {};
+    if (categoryId) {
+      where.categoryId = categoryId;
+    }
+
+    const { rows: data, count: total } = await this.tourModel.findAndCountAll({
+      where,
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']],
+    });
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
+    };
   }
 
   async findOne(id: number): Promise<Tour> {
